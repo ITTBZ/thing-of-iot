@@ -24,11 +24,11 @@ public class Weather {
     private Timestamp createdAt;
 
     @Column(name = "temperature", nullable = false)
-    private int temperature;
+    private float temperature;
 
     @Column(name = "humidity", nullable = false)
-    private int humidity;
+    private float humidity;
 
     @Column(name = "pressure")
-    private int pressure;
+    private float pressure;
 }
