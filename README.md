@@ -92,7 +92,7 @@ docker run -d -p 80:8080 weatherapp
 1. Connect your board to your device.
 2. Head over to the `client` directory within the repo. And open mbedStudio.
 3. Install the libraries.
-4. Replace the placeholders (including the <>) with your Wi-Fi credentials in `mbed_app.json`, as mentioned:
+4. Replace the placeholders (including the <>) with your Wi-Fi credentials and the spring application url in `mbed_app.json`, as mentioned:
 ```json
 "wifi-ssid": {
   "help": "WiFi SSID",
@@ -101,6 +101,10 @@ docker run -d -p 80:8080 weatherapp
 "wifi-password": {
   "help": "WiFi Password",
   "value": "\"<REPLACE_WITH_PASSWORD>\"" // Replace <REPLACE_WITH_PASSWORD>
+},
+"spring-api-url": {
+  "help": "Spring application URL",
+  "value": "\"<REPLACE_WITH_URL>\"" // Replace <REPLACE_WITH_URL>
 },
 ```
 5. Change the host variable in `main.cpp` to your backend uri.
