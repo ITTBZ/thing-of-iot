@@ -9,8 +9,8 @@
             "value": "\"<REPLACE_WITH_PASSWORD>\""
         },
         "weather-api-url": {
-            "help": "Host",
-            "value": "\"http://192.168.174.239:8080/weather\""
+            "help": "Spring application URL",
+            "value": "\"<REPLACE_WITH_URL>\""
         }
     },    
     "target_overrides": {

@@ -1,5 +1,6 @@
 #include "MbedJSONValue.h"
 #include "OLEDDisplay.h"
+#include "http_parser.h"
 #include "http_request.h"
 #include "mbed.h"
 #if MBED_CONF_IOTKIT_HTS221_SENSOR == true
@@ -30,6 +31,7 @@ int main() {
   float temperature, humidity;
 
   printf("\tWeather Station\n");
+  myled = 1;
 
   /* Init all sensors with default params */
   hum_temp.init(NULL);
@@ -56,9 +58,9 @@ int main() {
   SocketAddress socket_address;
   network->get_ip_address(&socket_address);
   printf("Connected to network!\n├ MAC: %s\n└ IP: %s\n", network->get_mac_address(), socket_address.get_ip_address());
+  myled = 0;
 
   while (1) {
-    myled = 1;
     hum_temp.get_temperature(&temperature);
     hum_temp.get_humidity(&humidity);
 
@@ -67,12 +69,11 @@ int main() {
 
     sprintf(request_body, "{\"temperature\": %f, \"humidity\": %f}", temperature, humidity);
 
-    HttpRequest *weather_update_request = new HttpRequest(network, HTTP_POST, host);
+    HttpRequest *weather_update_request = new HttpRequest(network, HTTP_POST, MBED_CONF_APP_WEATHER_API_URL);
     weather_update_request->set_header("content-type", "application/json");
     weather_update_request->send(request_body, strlen(request_body));
     delete weather_update_request;
 
-    myled = 0;
     thread_sleep_for(30000);
   }
 }
