@@ -54,13 +54,57 @@
 ## Getting Started
 
 ### Prerequisites
-
-- MariaDB server
+A server, vm or device running Linux is highly recommended.
+- Java 17 installed
+- MariaDB server installed
 - Docker installed
 
 ### Installation
+#### **Maria DB**
+1. Log-in to the mariadb shell.
+2. Create the database:
+```
+CREATE DATABASE weatherapp;
+```
 
-<!-- TODO -->
+#### **Weather App**
+1. Change dir (cd) into to the `weatherapp` directory within the repo.
+2. Replace the placeholders (including the <>) with your mariadb credentials in `src/main/resources/application.properties`, as mentioned:
+```
+spring.datasource.url=jdbc:mariadb://<REPLACE_WITH_MARIADB_SERVER>:3306/weatherapp
+spring.datasource.username=<REPLACE_WITH_USERNAME>
+spring.datasource.password=<REPLACE_WITH_PASSWORD>
+...
+```
+
+3. Build docker image:
+```
+./gradlew bootBuildImage --imageName=weatherapp
+```
+
+4. Run the docker image:
+```
+docker run -d -p 80:8080 weatherapp
+```
+5. To enable SSL, head over to the DNS section on your [Cloudflare dashboard](https://dash.cloudflare.com/) and create a proxied A record. Make sure to have your domain's SSL/TLS settings on `Flexible`.
+
+#### **ioTkit**
+1. Connect your board to your device.
+2. Head over to the `client` directory within the repo. And open mbedStudio.
+3. Replace the placeholders (including the <>) with your Wi-Fi credentials in `mbed_app.json`, as mentioned:
+```json
+"wifi-ssid": {
+  "help": "WiFi SSID",
+  "value": "\"<REPLACE_WITH_SSID>\"" // Replace <REPLACE_WITH_SSID>
+},
+"wifi-password": {
+  "help": "WiFi Password",
+  "value": "\"<REPLACE_WITH_PASSWORD>\"" // Replace <REPLACE_WITH_PASSWORD>
+},
+```
+4. Change the host variable in `main.cpp` to your backend uri.
+5. Install the libraries.
+6. Build and run the binaries.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
