@@ -8,7 +8,7 @@
             "help": "WiFi Password",
             "value": "\"<REPLACE_WITH_PASSWORD>\""
         },
-        "weather-api-url": {
+        "spring-api-url": {
             "help": "Spring application URL",
             "value": "\"<REPLACE_WITH_URL>\""
         }

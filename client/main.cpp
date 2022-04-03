@@ -69,7 +69,7 @@ int main() {
 
     sprintf(request_body, "{\"temperature\": %f, \"humidity\": %f}", temperature, humidity);
 
-    HttpRequest *weather_update_request = new HttpRequest(network, HTTP_POST, MBED_CONF_APP_WEATHER_API_URL);
+    HttpRequest *weather_update_request = new HttpRequest(network, HTTP_POST, MBED_CONF_APP_SPRING_API_URL);
     weather_update_request->set_header("content-type", "application/json");
     weather_update_request->send(request_body, strlen(request_body));
     delete weather_update_request;
