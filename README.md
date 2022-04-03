@@ -54,7 +54,7 @@
 ## Getting Started
 
 ### Prerequisites
-A server, vm or device running Linux is highly recommended.
+A server, vm or device running Linux is highly recommended. The MCU Board is required for running the client.
 - Java 17 installed
 - MariaDB server installed
 - Docker installed
