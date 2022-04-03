@@ -19,6 +19,8 @@ When enabling HTTPS for our Java spring application, we have chosen between 2 op
 
 For the deployment we were first thinking about deploying the spring application to our server as a jar file but we quickly realized that it would make sense to make it easily scalable for the second part of the project (LB3). So we decided to use Docker which would allow us to scale it with Kubernetes and Traefik load balancing if convenient in LB3, when using MQTT.
 
+Editing config files within the codebase to configure things is not the most convenient way, especially when using docker. We may improve the mariadb configuration in LB3 by accepting environment variables from docker in our spring application. This will allow us to deploy the docker container without the additional step of editing the config files before building the image.
+
 # Important acquisitions
 * Setting up Mbed (board and studio)
 * Programming with C++
