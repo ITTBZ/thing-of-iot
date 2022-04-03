@@ -117,8 +117,8 @@ docker run -d -p 80:8080 weatherapp
 - [x] Add ioTkit code
 - [x] Create REST api
 - [x] Add a UI
-- [ ] Add SSL support
 - [ ] Use the MQTT protocol
+- [ ] Add token authentication for pushing changes
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
