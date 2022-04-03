@@ -103,7 +103,7 @@ docker run -d -p 80:8080 weatherapp
   "value": "\"<REPLACE_WITH_PASSWORD>\"" // Replace <REPLACE_WITH_PASSWORD>
 },
 ```
-4. Change the host variable in `main.cpp` to your backend uri.
+5. Change the host variable in `main.cpp` to your backend uri.
 6. Compile and upload the binaries to your mbed board.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
