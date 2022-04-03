@@ -63,7 +63,6 @@ int main() {
     hum_temp.get_humidity(&humidity);
 
     oled.clear();
-    oled.cursor(1, 0);
     oled.printf("Temperature: %.1f%c C\nHumidity: %.1f", temperature, (char)247, humidity);
 
     sprintf(request_body, "{\"temperature\": %f, \"humidity\": %f}", temperature, humidity);
