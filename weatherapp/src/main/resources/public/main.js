@@ -19,6 +19,10 @@ const chart = new Chart(chartContext, {
       },
     ],
   },
+  options: {
+    borderWidth: 2,
+    pointRadius: 0
+  }
 });
 
 fetchData = async (fullFetch = false) => {
