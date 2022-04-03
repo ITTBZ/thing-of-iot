@@ -22,7 +22,7 @@ const chart = new Chart(chartContext, {
 });
 
 fetchData = async (fullFetch = false) => {
-  const weatherRequest = await fetch('http://localhost:8080/weather');
+  const weatherRequest = await fetch('/weather');
   const jsonResponse = await weatherRequest.json();
 
   jsonResponse
@@ -43,5 +43,5 @@ fetchData = async (fullFetch = false) => {
     });
 }
 
-fetchData(true);
 setInterval(fetchData, 5000);
+fetchData(true);
