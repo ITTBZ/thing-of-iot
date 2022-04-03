@@ -3,14 +3,19 @@ As of now, the project was really fun to work with. We both had no experience wi
 
 Without SSL/TLS:
 ```cpp
-HttpRequest *request = new HttpRequest(network_here, HTTP_METHOD_here, "http://example.com");
+HttpRequest *request = new HttpRequest(network, HTTP_POST, MBED_CONF_APP_SPRING_API_URL);
 // ...
 delete request;
 ```
 
 With SSL/TLS:
 ```cpp
-HttpsRequest *request = new HttpsRequest(network_here, "trusted ca's", HTTP_METHOD_here, "http://example.com");
+const char SSL_CA_PEM[] = "-----BEGIN CERTIFICATE-----\n" // The whole certificate
+```
+To extract the root CA for a domain open up Firefox, visit the **HTTPS** website, click on the padlock next to the url, click "Connection secure" > "More information" > "Security" > View certificate. The certificate on the very right side is the root certificate. Scroll down to the "Miscellaneous" and download the "PEM (cert)" file.
+
+```cpp
+HttpsRequest *request = new HttpsRequest(network, SSL_CA_PEM, HTTP_POST, MBED_CONF_APP_SPRING_API_URL);
 // ...
 delete request;
 ```
