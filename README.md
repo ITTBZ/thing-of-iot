@@ -91,7 +91,8 @@ docker run -d -p 80:8080 weatherapp
 #### **ioTkit**
 1. Connect your board to your device.
 2. Head over to the `client` directory within the repo. And open mbedStudio.
-3. Replace the placeholders (including the <>) with your Wi-Fi credentials in `mbed_app.json`, as mentioned:
+3. Install the libraries.
+4. Replace the placeholders (including the <>) with your Wi-Fi credentials in `mbed_app.json`, as mentioned:
 ```json
 "wifi-ssid": {
   "help": "WiFi SSID",
@@ -103,8 +104,7 @@ docker run -d -p 80:8080 weatherapp
 },
 ```
 4. Change the host variable in `main.cpp` to your backend uri.
-5. Install the libraries.
-6. Build and run the binaries.
+6. Compile and upload the binaries to your mbed board.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
