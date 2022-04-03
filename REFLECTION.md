@@ -1,20 +1,18 @@
 # Reflection (LB2)
-As of now, the project was really fun to work with. We both had no experience with C++ before. During the first part of the project we connected the IoT-Kit and learned how to write our own code on it. We learned how to collect sensor data and send it to another service via the HTTP protocol from the mbed board. When we were trying to find out how to enable SSL, going through the `http_request.h` code, we realized that it only supports non-SSL requests. The `https_request.h` file caught our attention really fast. We recognized that we have to utilze another Class which requires another parameter, a String containing the trusted certificate authorities.
+As of now, the project was really fun to work with. We both had no experience with C++ before. During the first part of the project we connected the IoT-Kit and learned how to write our own code on it. We learned how to collect sensor data and send it to another service via the HTTP protocol from the mbed board. When we were trying to find out how to enable SSL, going through the `http_request.h` code, we realized that it only supports non-SSL requests. The `https_request.h` file caught our attention really fast. We recognized that we have to utilze another Class which requires another parameter, a String containing the trusted root certificate authoritie.
 
-Without SSL/TLS:
+**Without SSL/TLS**:
 ```cpp
 HttpRequest *request = new HttpRequest(network, HTTP_POST, MBED_CONF_APP_SPRING_API_URL);
 // ...
 delete request;
 ```
 
-With SSL/TLS:
+**With SSL/TLS**:  
+*To extract the root CA for a domain open up Firefox, visit the https website, click on the padlock next to the url, click "Connection secure" > "More information" > "Security" > View certificate. The certificate on the very right side is the root certificate. Scroll down to the "Miscellaneous" and download the "PEM (cert)" file.*
 ```cpp
 const char SSL_CA_PEM[] = "-----BEGIN CERTIFICATE-----\n" // The whole certificate
-```
-To extract the root CA for a domain open up Firefox, visit the **HTTPS** website, click on the padlock next to the url, click "Connection secure" > "More information" > "Security" > View certificate. The certificate on the very right side is the root certificate. Scroll down to the "Miscellaneous" and download the "PEM (cert)" file.
 
-```cpp
 HttpsRequest *request = new HttpsRequest(network, SSL_CA_PEM, HTTP_POST, MBED_CONF_APP_SPRING_API_URL);
 // ...
 delete request;
