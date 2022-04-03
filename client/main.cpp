@@ -1,16 +1,13 @@
-#include "http_response.h"
-#include "mbed.h"
-#include <string>
+#include "MbedJSONValue.h"
 #include "OLEDDisplay.h"
 #include "http_request.h"
-#include "MbedJSONValue.h"
+#include "mbed.h"
 #if MBED_CONF_IOTKIT_HTS221_SENSOR == true
 #include "HTS221Sensor.h"
 #endif
 #if MBED_CONF_IOTKIT_BMP180_SENSOR == true
 #include "BMP180Wrapper.h"
 #endif
-#include "http_request.h"
 #include "OLEDDisplay.h"
 
 // UI
@@ -23,7 +20,7 @@ static HTS221Sensor hum_temp(&devI2c);
 static BMP180Wrapper hum_temp(&devI2c);
 #endif
 
-const char host[] = "http://192.168.174.239:8080/weather";
+const char host[] = "http://weatherapp.just2flex.com/weather";
 char request_body[1024];
 
 DigitalOut myled(MBED_CONF_IOTKIT_LED1);
