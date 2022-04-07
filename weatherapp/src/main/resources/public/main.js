@@ -25,7 +25,9 @@ const chart = new Chart(chartContext, {
   }
 });
 
-fetchData = async (fullFetch = false) => {
+const waitFor = async (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+const fetchWeather = (async (fullFetch = false) => {
   const weatherRequest = await fetch('/weather');
   const jsonResponse = await weatherRequest.json();
 
@@ -45,7 +47,9 @@ fetchData = async (fullFetch = false) => {
       chart.data.datasets[1].data.push(humidity);
       chart.update();
     });
-}
 
-setInterval(fetchData, 5000);
-fetchData(true);
+  // The old method with setInterval started denying the service of our server. Whoops!
+  await waitFor(5000);
+    fetchWeather();
+})
+fetchWeather();
