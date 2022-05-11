@@ -29,10 +29,10 @@ K3: IoTKit
 ✓	• Es ist beschrieben, wie das Programm erweitert werden muss für HTTPS.
 
 K4: Gateway / Edge
-✓ • Gateway Dienst installiert, z.B. MQTT Bro-ker mosquitto oder Verwendung von cloud.tbz.ch als Broker
-✓ • Zusätzlichen Dienst, für Workflow Abhand-lung, z.B. Node-RED installiert
-✓ • Eigenen Gateway Dienst implementiert (MQTT -> http) = zwei Punkte
-✓ • Eigenen Gateway Dienst implementiert mit Umwandlung Protokoll (MQTT -> HTTP) und Daten (CSV -> JSON) = drei Punkte
+✓	• Gateway Dienst installiert, z.B. MQTT Bro-ker mosquitto oder Verwendung von cloud.tbz.ch als Broker
+✓	• Zusätzlichen Dienst, für Workflow Abhand-lung, z.B. Node-RED installiert
+✓	• Eigenen Gateway Dienst implementiert (MQTT -> http) = zwei Punkte
+✓	• Eigenen Gateway Dienst implementiert mit Umwandlung Protokoll (MQTT -> HTTP) und Daten (CSV -> JSON) = drei Punkte
 
 K5: (Cloud) Backend Applikation [was K4 before]
 ✓	• (Cloud) Dienst aus den Beispielen verwendet
