@@ -92,7 +92,7 @@ docker run -d -p 80:8080 weatherapp
 1. Connect your board to your device.
 2. Head over to the `client` directory within the repo. And open mbedStudio.
 3. Install the libraries.
-4. Replace the placeholders (including the <>) with your Wi-Fi credentials and the spring application url in `mbed_app.json`, as mentioned:
+4. Replace the placeholders (including the <>) with your Wi-Fi credentials and the mqtt gateway uri in `mbed_app.json`, as mentioned:
 ```json
 "wifi-ssid": {
   "help": "WiFi SSID",
@@ -102,13 +102,44 @@ docker run -d -p 80:8080 weatherapp
   "help": "WiFi Password",
   "value": "\"<REPLACE_WITH_PASSWORD>\"" // Replace <REPLACE_WITH_PASSWORD>
 },
-"spring-api-url": {
-  "help": "Spring application URL",
-  "value": "\"<REPLACE_WITH_URL>\"" // Replace <REPLACE_WITH_URL>
+"gateway-uri": {
+  "help": "Gateway URI",
+  "value": "\"<REPLACE_WITH_URI>\"" // Replace <REPLACE_WITH_URI>
 },
 ```
 5. Change the host variable in `main.cpp` to your backend uri.
 6. Compile and upload the binaries to your mbed board.
+
+#### **MQTT Gateway**
+1. Pull the docker image:
+```
+docker pull eclipse-mosquitto
+```
+
+2. Create a config file located `/mosquitto/mosquitto.conf`:
+```
+persistence true
+allow_anonymous true
+listener 1883
+persistence_location /mosquitto/data/
+log_dest file /mosquitto/log/mosquitto.log
+```
+3. Run the docker image:
+```
+docker run -d -p 1883:1883 -p 9001:9001 -v /mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf eclipse-mosquitto
+```
+
+#### **Node-RED**
+1. Pull the docker image:
+```
+docker pull nodered/node-red
+```
+
+2. Run the docker image:
+```
+docker run -d -p 1880:1880 -v nodereddata:/data nodered/node-red
+```
+3. Open the website http://<host_ip>:1880
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -118,7 +149,6 @@ docker run -d -p 80:8080 weatherapp
 - [x] Create REST api
 - [x] Add a UI
 - [ ] Use the MQTT protocol
-- [ ] Add token authentication for pushing changes
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
