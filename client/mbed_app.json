@@ -8,9 +8,13 @@
             "help": "WiFi Password",
             "value": "\"<REPLACE_WITH_PASSWORD>\""
         },
-        "spring-api-url": {
-            "help": "Spring application URL",
-            "value": "\"<REPLACE_WITH_URL>\""
+        "gateway-host": {
+            "help": "Edge gateway host",
+            "value": "\"<REPLACE_WITH_GATEWAY_HOST>\""
+        },
+        "gateway-port": {
+            "help": "Edge gateway port",
+            "value": "1883"
         }
     },    
     "target_overrides": {
