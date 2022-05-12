@@ -3,6 +3,7 @@
 #include "http_parser.h"
 #include "http_request.h"
 #include "mbed.h"
+#include <cstdio>
 #if MBED_CONF_IOTKIT_HTS221_SENSOR == true
 #include "HTS221Sensor.h"
 #endif
@@ -10,6 +11,11 @@
 #include "BMP180Wrapper.h"
 #endif
 #include "OLEDDisplay.h"
+
+#include <MQTTClientMbedOs.h>
+#include <MQTTNetwork.h>
+#include <MQTTClient.h>
+#include <MQTTmbed.h> // Countdown
 
 // UI
 OLEDDisplay oled(MBED_CONF_IOTKIT_OLED_RST, MBED_CONF_IOTKIT_OLED_SDA, MBED_CONF_IOTKIT_OLED_SCL);
@@ -21,13 +27,21 @@ static HTS221Sensor hum_temp(&devI2c);
 static BMP180Wrapper hum_temp(&devI2c);
 #endif
 
-const char host[] = "http://weatherapp.just2flex.com/weather";
-char request_body[1024];
-
 DigitalOut myled(MBED_CONF_IOTKIT_LED1);
 
+
+void publish( MQTTNetwork &mqttNetwork, MQTT::Client<MQTTNetwork, Countdown> &client, char* topic, char payload[100]) {
+    MQTT::Message message;    
+    message.qos = MQTT::QOS0;
+    message.retained = false;
+    message.dup = false;
+    message.payload = (void*) payload;
+    message.payloadlen = strlen(payload)+1;
+    client.publish( topic, message);  
+}
+
 int main() {
-  uint8_t id;
+  char weather_csv[100];
   float temperature, humidity;
 
   printf("\tWeather Station\n");
@@ -36,8 +50,6 @@ int main() {
   /* Init all sensors with default params */
   hum_temp.init(NULL);
   hum_temp.enable();
-
-  hum_temp.read_id(&id);
   //printf("HTS221  humidity & temperature    = 0x%X\r\n", id);
 
   // Connect to the network with the default networking interface
@@ -59,21 +71,32 @@ int main() {
   network->get_ip_address(&socket_address);
   printf("Connected to network!\n├ MAC: %s\n└ IP: %s\n", network->get_mac_address(), socket_address.get_ip_address());
   myled = 0;
+  
+  // TCP/IP und MQTT initialisieren (muss in main erfolgen)
+  MQTTNetwork mqttNetwork( network );
+  MQTT::Client<MQTTNetwork, Countdown> client(mqttNetwork);
+  
+  printf("Connecting to %s:%d\r\n", MBED_CONF_APP_GATEWAY_HOST, MBED_CONF_APP_GATEWAY_PORT);
+  int rc = mqttNetwork.connect(MBED_CONF_APP_GATEWAY_HOST, MBED_CONF_APP_GATEWAY_PORT);
+  if (rc != 0)
+    printf("rc from TCP connect is %d\r\n", rc);
 
-  while (1) {
+  MQTTPacket_connectData data = MQTTPacket_connectData_initializer;
+  data.MQTTVersion = 3;
+  data.clientID.cstring = (char*) network->get_mac_address();
+  if ((rc = client.connect(data)) != 0)
+    printf("rc from MQTT connect is %d\r\n", rc);    
+  
+  while (true) {
     hum_temp.get_temperature(&temperature);
     hum_temp.get_humidity(&humidity);
 
     oled.clear();
     oled.printf("Temperature: %.1f%c C\nHumidity: %.1f", temperature, (char)247, humidity);
 
-    sprintf(request_body, "{\"temperature\": %f, \"humidity\": %f}", temperature, humidity);
+    sprintf(weather_csv, "%f,%f", temperature, humidity);
+    publish(mqttNetwork, client, "weather", weather_csv);
 
-    HttpRequest *weather_update_request = new HttpRequest(network, HTTP_POST, MBED_CONF_APP_SPRING_API_URL);
-    weather_update_request->set_header("content-type", "application/json");
-    weather_update_request->send(request_body, strlen(request_body));
-    delete weather_update_request;
-
-    thread_sleep_for(30000);
+    thread_sleep_for(3000);
   }
 }
