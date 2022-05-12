@@ -54,22 +54,29 @@
 ## Getting Started
 
 ### Prerequisites
+
 A server, vm or device running Linux is highly recommended. The MCU Board is required for running the client.
+
 - Java 17 installed
 - MariaDB server installed
 - Docker installed
 
 ### Installation
+
 #### **Maria DB**
+
 1. Log-in to the mariadb shell.
 2. Create the database:
+
 ```
 CREATE DATABASE weatherapp;
 ```
 
 #### **Weather App**
+
 1. Change dir (cd) into to the `weatherapp` directory within the repo.
 2. Replace the placeholders (including the <>) with your mariadb credentials in `src/main/resources/application.properties`, as mentioned:
+
 ```
 spring.datasource.url=jdbc:mariadb://<REPLACE_WITH_MARIADB_SERVER>:3306/weatherapp
 spring.datasource.username=<REPLACE_WITH_USERNAME>
@@ -78,21 +85,26 @@ spring.datasource.password=<REPLACE_WITH_PASSWORD>
 ```
 
 3. Build docker image:
+
 ```
 ./gradlew bootBuildImage --imageName=weatherapp
 ```
 
 4. Run the docker image:
+
 ```
 docker run -d -p 80:8080 weatherapp
 ```
+
 5. To enable SSL, head over to the DNS section on your [Cloudflare dashboard](https://dash.cloudflare.com/) and create a proxied A record. Make sure to have your domain's SSL/TLS settings on `Flexible`.
 
 #### **ioTkit**
+
 1. Connect your board to your device.
 2. Head over to the `client` directory within the repo. And open mbedStudio.
 3. Install the libraries.
-4. Replace the placeholders (including the <>) with your Wi-Fi credentials and the mqtt gateway uri in `mbed_app.json`, as mentioned:
+4. Replace the placeholders (including the <>) with your Wi-Fi credentials and the mqtt gateway host (and port if you are not using the default port 1883) in `mbed_app.json`, as mentioned:
+
 ```json
 "wifi-ssid": {
   "help": "WiFi SSID",
@@ -102,21 +114,24 @@ docker run -d -p 80:8080 weatherapp
   "help": "WiFi Password",
   "value": "\"<REPLACE_WITH_PASSWORD>\"" // Replace <REPLACE_WITH_PASSWORD>
 },
-"gateway-uri": {
-  "help": "Gateway URI",
-  "value": "\"<REPLACE_WITH_URI>\"" // Replace <REPLACE_WITH_URI>
+"gateway-host": {
+  "help": "Edge gateway host",
+  "value": "\"<REPLACE_WITH_GATEWAY_HOST>\"" // Replace <REPLACE_WITH_URI>
 },
 ```
-5. Change the host variable in `main.cpp` to your backend uri.
-6. Compile and upload the binaries to your mbed board.
+
+5. Compile and upload the binaries to your mbed board.
 
 #### **MQTT Gateway**
+
 1. Pull the docker image:
+
 ```
 docker pull eclipse-mosquitto
 ```
 
 2. Create a config file located `/mosquitto/mosquitto.conf`:
+
 ```
 persistence true
 allow_anonymous true
@@ -124,21 +139,27 @@ listener 1883
 persistence_location /mosquitto/data/
 log_dest file /mosquitto/log/mosquitto.log
 ```
+
 3. Run the docker image:
+
 ```
 docker run -d -p 1883:1883 -p 9001:9001 -v /mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf eclipse-mosquitto
 ```
 
 #### **Node-RED**
+
 1. Pull the docker image:
+
 ```
 docker pull nodered/node-red
 ```
 
 2. Run the docker image:
+
 ```
 docker run -d -p 1880:1880 -v nodereddata:/data nodered/node-red
 ```
+
 3. Open the website http://<host_ip>:1880
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -148,7 +169,7 @@ docker run -d -p 1880:1880 -v nodereddata:/data nodered/node-red
 - [x] Add ioTkit code
 - [x] Create REST api
 - [x] Add a UI
-- [ ] Use the MQTT protocol
+- [x] Use the MQTT protocol
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -178,6 +199,7 @@ Max - max.gordon@edu.tbz.ch
 ## Resources
 
 - [iotkitv3/http](https://github.com/iotkitv3/http)
+- [iotkitv3/http](https://github.com/iotkitv3/mqtt)
 - [Google pki](https://pki.goog/repository/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
