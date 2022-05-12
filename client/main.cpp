@@ -50,10 +50,7 @@ int main() {
   /* Init all sensors with default params */
   hum_temp.init(NULL);
   hum_temp.enable();
-  //printf("HTS221  humidity & temperature    = 0x%X\r\n", id);
 
-  // Connect to the network with the default networking interface
-  // if you use WiFi: see mbed_app.json for the credentials
   WiFiInterface *network = WiFiInterface::get_default_instance();
   if (!network) {
     printf("ERROR: No WiFiInterface found.\n");
@@ -72,7 +69,6 @@ int main() {
   printf("Connected to network!\n├ MAC: %s\n└ IP: %s\n", network->get_mac_address(), socket_address.get_ip_address());
   myled = 0;
   
-  // TCP/IP und MQTT initialisieren (muss in main erfolgen)
   MQTTNetwork mqttNetwork( network );
   MQTT::Client<MQTTNetwork, Countdown> client(mqttNetwork);
   
