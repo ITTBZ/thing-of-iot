@@ -90,9 +90,9 @@ int main() {
     oled.clear();
     oled.printf("Temperature: %.1f%c C\nHumidity: %.1f", temperature, (char)247, humidity);
 
-    sprintf(weather_csv, "%f,%f", temperature, humidity);
+    sprintf(weather_csv, "%f,%f,ok", temperature, humidity);
     publish(mqttNetwork, client, "weather", weather_csv);
 
-    thread_sleep_for(3000);
+    thread_sleep_for(30000);
   }
 }
