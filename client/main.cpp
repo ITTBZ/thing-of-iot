@@ -1,3 +1,4 @@
+#include "BUILD/DISCO_L475VG_IOT01A/ARMC6/mbed_config.h"
 #include "MbedJSONValue.h"
 #include "OLEDDisplay.h"
 #include "http_parser.h"
@@ -20,13 +21,16 @@
 // UI
 OLEDDisplay oled(MBED_CONF_IOTKIT_OLED_RST, MBED_CONF_IOTKIT_OLED_SDA, MBED_CONF_IOTKIT_OLED_SCL);
 static DevI2C devI2c(MBED_CONF_IOTKIT_I2C_SDA, MBED_CONF_IOTKIT_I2C_SCL);
+
 #if MBED_CONF_IOTKIT_HTS221_SENSOR == true
 static HTS221Sensor hum_temp(&devI2c);
 #endif
+
 #if MBED_CONF_IOTKIT_BMP180_SENSOR == true
 static BMP180Wrapper hum_temp(&devI2c);
 #endif
 
+AnalogIn hallSensor( MBED_CONF_IOTKIT_HALL_SENSOR );
 DigitalOut myled(MBED_CONF_IOTKIT_LED1);
 
 
@@ -41,8 +45,8 @@ void publish( MQTTNetwork &mqttNetwork, MQTT::Client<MQTTNetwork, Countdown> &cl
 }
 
 int main() {
-  char weather_csv[100];
-  float temperature, humidity;
+  char payload_data[100];
+  float temperature, humidity, magnet_field;
 
   printf("\tWeather Station\n");
   myled = 1;
@@ -90,8 +94,13 @@ int main() {
     oled.clear();
     oled.printf("Temperature: %.1f%c C\nHumidity: %.1f", temperature, (char)247, humidity);
 
-    sprintf(weather_csv, "%f,%f,ok", temperature, humidity);
-    publish(mqttNetwork, client, "weather", weather_csv);
+    sprintf(payload_data, "%f,%f,ok", temperature, humidity);
+    publish(mqttNetwork, client, "weather", payload_data);
+
+
+    magnet_field = hallSensor.read();
+    sprintf(payload_data, "%f,ok", magnet_field);
+    publish(mqttNetwork, client, "magnet", payload_data);
 
     thread_sleep_for(30000);
   }
