@@ -162,6 +162,10 @@ docker run -d -p 1880:1880 -v nodereddata:/data nodered/node-red
 
 3. Open the website http://<host_ip>:1880
 
+4. Import the flow from `node_red_flows.json`.
+
+5. Replace the HTTP endpoints with your endpoints within the node red flow.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Roadmap
