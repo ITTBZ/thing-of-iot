@@ -1,0 +1,236 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "626d09bfe1e809be",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "Weather in",
+        "topic": "weather",
+        "qos": "2",
+        "datatype": "utf8",
+        "broker": "fbf8ec4e94c24020",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 100,
+        "y": 220,
+        "wires": [
+            [
+                "42f851f5b39cc654"
+            ]
+        ]
+    },
+    {
+        "id": "b9a3bcab254ed11a",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "<replace with discord webhook endpoint>",
+        "tls": "c3ef77fbee16ad70",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 810,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b899937664dc7483",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "json to discord webhook payload",
+        "func": "msg.payload = ({ content: `Temperature: ${msg.payload.temperature} Humidity: ${msg.payload.humidity}`  })\nmsg.headers = { 'Content-Type': 'application/json' }\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 280,
+        "wires": [
+            [
+                "b9a3bcab254ed11a"
+            ]
+        ]
+    },
+    {
+        "id": "42f851f5b39cc654",
+        "type": "csv",
+        "z": "f6f2187d.f17ca8",
+        "name": "csv to json",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "temperature,humidity",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": false,
+        "include_null_values": false,
+        "x": 270,
+        "y": 220,
+        "wires": [
+            [
+                "16654dfdc21bb15f",
+                "b899937664dc7483"
+            ]
+        ]
+    },
+    {
+        "id": "16654dfdc21bb15f",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "query",
+        "url": "https://weatherapp.just2flex.com/weather",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 490,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3a767a4a213f987c",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "Magnet in",
+        "topic": "magnet",
+        "qos": "2",
+        "datatype": "utf8",
+        "broker": "fbf8ec4e94c24020",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 100,
+        "y": 440,
+        "wires": [
+            [
+                "17979e3338a822e4"
+            ]
+        ]
+    },
+    {
+        "id": "17979e3338a822e4",
+        "type": "csv",
+        "z": "f6f2187d.f17ca8",
+        "name": "csv to json",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "none",
+        "multi": "one",
+        "ret": "\\n",
+        "temp": "strength",
+        "skip": "0",
+        "strings": true,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 270,
+        "y": 440,
+        "wires": [
+            [
+                "fa084ccacb59d342"
+            ]
+        ]
+    },
+    {
+        "id": "fa084ccacb59d342",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "json to discord webhook payload",
+        "func": "msg.payload = ({ content: `Magnet strength: ${parseFloat(msg.payload.strength) < .5 ? 'CRITICAL <@463059134661787658>' : 'OK (' + msg.payload.strength + ')'}`  })\nmsg.headers = { 'Content-Type': 'application/json' }\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 440,
+        "wires": [
+            [
+                "0fc3372df65558d9"
+            ]
+        ]
+    },
+    {
+        "id": "0fc3372df65558d9",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "<replace with discord webhook endpoint>",
+        "tls": "c3ef77fbee16ad70",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 800,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fbf8ec4e94c24020",
+        "type": "mqtt-broker",
+        "name": "Weather App",
+        "broker": "45.77.52.87",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "The MQTT broker has started...",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "c3ef77fbee16ad70",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false,
+        "alpnprotocol": ""
+    }
+]
